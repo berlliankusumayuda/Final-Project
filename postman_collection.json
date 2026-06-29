@@ -1,0 +1,7 @@
+# Postman collection placeholder
+{
+  "info": {"name": "LMS API","schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+  "item": [
+    {"name": "Login", "request": {"method": "POST", "header": [], "body": {"mode":"raw","raw":"{\"username\":\"admin\",\"password\":\"adminpass\"}"}, "url": {"raw":"{{baseUrl}}/auth/login"}}}
+  ]
+}

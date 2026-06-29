@@ -1,0 +1,9 @@
+# Python artifacts
+__pycache__/
+*.pyc
+.env
+.DS_Store
+node_modules/
+*.sqlite3
+/media
+/staticfiles
