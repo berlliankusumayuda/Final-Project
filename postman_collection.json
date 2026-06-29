@@ -1,7 +1,9 @@
-# Postman collection placeholder
 {
   "info": {"name": "LMS API","schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
   "item": [
-    {"name": "Login", "request": {"method": "POST", "header": [], "body": {"mode":"raw","raw":"{\"username\":\"admin\",\"password\":\"adminpass\"}"}, "url": {"raw":"{{baseUrl}}/auth/login"}}}
+    {"name": "Login", "request": {"method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\"username\":\"admin\",\"password\":\"adminpass\"}"}, "url": {"raw":"{{baseUrl}}/auth/login","host":["{{baseUrl}}"],"path":["auth","login"]}}},
+    {"name": "Courses list", "request": {"method": "GET", "header": [], "url": {"raw":"{{baseUrl}}/courses/","host":["{{baseUrl}}"],"path":["courses"]}}},
+    {"name": "Course detail", "request": {"method": "GET", "header": [], "url": {"raw":"{{baseUrl}}/courses/1","host":["{{baseUrl}}"],"path":["courses","1"]}}},
+    {"name": "Enroll (auth)", "request": {"method": "POST", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "body":{"mode":"raw","raw":"{\"course_id\":1}"}, "url": {"raw":"{{baseUrl}}/enrollments/","host":["{{baseUrl}}"],"path":["enrollments"]}}}
   ]
 }
