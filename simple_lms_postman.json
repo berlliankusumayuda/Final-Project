@@ -1,0 +1,175 @@
+{
+  "info": {
+    "name": "Simple LMS API – Paket 3",
+    "description": "Postman collection for Simple LMS Extended Backend with Assessment & Certificate",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000/api/v1" },
+    { "key": "access_token", "value": "" },
+    { "key": "course_id", "value": "1" },
+    { "key": "quiz_id", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"newuser\", \"email\": \"new@lms.id\", \"password\": \"Test@1234\", \"role\": \"student\"}"
+            }
+          }
+        },
+        {
+          "name": "Login (Student)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["pm.collectionVariables.set('access_token', pm.response.json().access);"]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"student1\", \"password\": \"Student@1234\"}"
+            }
+          }
+        },
+        {
+          "name": "Login (Instructor)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"instructor1\", \"password\": \"Instructor@1234\"}"
+            }
+          }
+        },
+        {
+          "name": "My Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "List Courses",
+          "request": { "method": "GET", "url": "{{base_url}}/courses" }
+        },
+        {
+          "name": "Enroll in Course",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/courses/{{course_id}}/enroll"
+          }
+        },
+        {
+          "name": "My Enrollments",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/courses/enrollments/my"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assessments",
+      "item": [
+        {
+          "name": "List Quizzes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/assessments/courses/{{course_id}}/quizzes"
+          }
+        },
+        {
+          "name": "Get Quiz (student view)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/assessments/courses/{{course_id}}/quizzes/{{quiz_id}}"
+          }
+        },
+        {
+          "name": "Check Attempt Status",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/assessments/courses/{{course_id}}/quizzes/{{quiz_id}}/status"
+          }
+        },
+        {
+          "name": "Submit Quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{base_url}}/assessments/courses/{{course_id}}/quizzes/{{quiz_id}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"answers\": [{\"question_id\": 1, \"choice_id\": 2}]}"
+            }
+          }
+        },
+        {
+          "name": "My Attempt History",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/assessments/courses/{{course_id}}/quizzes/{{quiz_id}}/attempts"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Certificates",
+      "item": [
+        {
+          "name": "My Certificates",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/certificates/my"
+          }
+        },
+        {
+          "name": "Generate Certificate",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/certificates/generate/{{course_id}}"
+          }
+        },
+        {
+          "name": "Verify Certificate (public)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/certificates/verify/PASTE-UNIQUE-CODE-HERE"
+          }
+        }
+      ]
+    }
+  ]
+}
